@@ -29,12 +29,12 @@ Der Lauf ist erfolgreich, wenn:
 
 - Coolify den gepinnten Git-Commit baut
 - der Container stabil laeuft
-- `dental-school.education` und `www.dental-school.education` per `A` auf
-  `coolify-01` zeigen
-- HTTP/HTTPS oeffentlich funktionieren
-- die Seite den Marker
-  `DENTAL-SCHOOL-EDUCATION-LIVE-PROOF OK`
+- `dental-school.education` per `A` auf `coolify-01` zeigt und direkt `HTTPS 200`
   liefert
+- `www.dental-school.education` per `A` auf `coolify-01` zeigt und sauber auf
+  Apex umleitet
+- HTTP/HTTPS oeffentlich funktionieren
+- die Seite den fuer den jeweils deployten SHA erwarteten Marker liefert
 
 ## Nicht Teil dieses Repos
 
@@ -50,10 +50,14 @@ Website-Pfad.
 
 ## Aktueller Referenzstand
 
-- GitHub-Proof-Commit:
-  - `8ccb1f7ac8a9577395691f293da862a016ed1de3`
+- aktueller GitHub-Proof-Commit:
+  - `f324c0b5269ef68ec6932cc0432627aaa1f1c44a`
+- aktueller oeffentlicher Marker auf Apex:
+  - `DENTAL-SCHOOL-EDUCATION-REDEPLOY-V1 OK`
 - aktueller Status:
   - `live proof, test-only, retained`
+  - Apex ist kanonisch
+  - `www` leitet per `308` auf Apex um
 
 ## Reale Feldlehren aus diesem Proof
 
@@ -67,6 +71,14 @@ Website-Pfad.
   alten `AAAA`-Pfad auf das fruehere Webhosting
 - nachdem oeffentliche Resolver kein `AAAA` mehr lieferten, reichte ein
   gezielter Neustart von `coolify-proxy`, damit HTTPS sauber ausgestellt wurde
+- ein normaler Redeploy wurde mit Commit
+  `97fa5eb5b9e9b17540d457c5bbf0fcc47c51be7a` oeffentlich gegen beide Hostnames
+  bewiesen
+- fuer den echten Rollback war die Coolify-Seite `Rollback` mit bereits
+  gebautem Image der belastbare Operatorpfad; das blosse Zuruecksetzen des
+  Source-Commit-Felds plus Redeploy war kein sicherer Rollback-Nachweis
+- fuer die statische Nginx-Seite war ein kleiner app-lokaler Redirect-Block
+  `www -> apex` der sauberste Canonical-Default
 - die Seite setzt zusaetzlich bewusst Anti-Indexierungs-Signale:
   - `robots.txt` mit `Disallow: /`
   - HTML-Meta `noindex,nofollow,noarchive,noimageindex,nosnippet`
