@@ -47,3 +47,27 @@ Der Lauf ist erfolgreich, wenn:
 Mail- und andere Nicht-Web-Records der Domain bleiben ausserhalb dieses Repos
 und werden im Host-Repo dokumentiert. Dieses Repo beschreibt nur den
 Website-Pfad.
+
+## Aktueller Referenzstand
+
+- GitHub-Proof-Commit:
+  - `8ccb1f7ac8a9577395691f293da862a016ed1de3`
+- aktueller Status:
+  - `live proof, test-only, retained`
+
+## Reale Feldlehren aus diesem Proof
+
+- das Coolify-Domains-Feld musste als volle URL-Liste gesetzt werden:
+  - `https://dental-school.education,https://www.dental-school.education`
+- blanke Hostnamen ohne Schema fuehrten auf diesem Host zu kaputten
+  Traefik-Regeln
+- fuer den ersten Webproof wurden die `AAAA`-Records fuer Apex und `www`
+  bewusst entfernt
+- der erste ACME-Lauf scheiterte trotzdem noch an einem oeffentlich gecachten
+  alten `AAAA`-Pfad auf das fruehere Webhosting
+- nachdem oeffentliche Resolver kein `AAAA` mehr lieferten, reichte ein
+  gezielter Neustart von `coolify-proxy`, damit HTTPS sauber ausgestellt wurde
+- die Seite setzt zusaetzlich bewusst Anti-Indexierungs-Signale:
+  - `robots.txt` mit `Disallow: /`
+  - HTML-Meta `noindex,nofollow,noarchive,noimageindex,nosnippet`
+  - HTTP-Header `X-Robots-Tag` mit denselben Direktiven
