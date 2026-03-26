@@ -1,0 +1,54 @@
+contract_version: v1
+
+lifecycle:
+  mode: live
+
+project:
+  name: dental-school-education-live-proof
+  owner: ops-real-domain-proof
+  repository_url: https://github.com/lastknowngood/dental-school-education-live-proof.git
+
+target:
+  platform_class: coolify-single-host-v1
+  host_label: coolify-01
+  environment: production
+
+exposure:
+  mode: public
+  domains:
+    - dental-school.education
+    - www.dental-school.education
+
+coolify:
+  app_type: dockerfile
+  resource_name: dental-school-education-live-proof
+  project_name: live-proof-tests
+
+build:
+  source_type: git
+  source_ref: main
+  runtime_notes: Static site served from nginx:alpine on the container default HTTP port.
+
+state:
+  stateful: false
+  data_paths: []
+  storage_class: none
+
+dependencies:
+  database: none
+  cache: none
+  object_storage: none
+
+secrets:
+  source_of_truth: none
+  required_secret_names: []
+
+operations:
+  healthcheck: GET /
+  rollback_hint: Either keep the placeholder live after evidence or restore the prior DNS A/AAAA values and remove the test app.
+  backup_class: stateless
+
+notes:
+  - Real-domain test-only public website proof for dental-school.education.
+  - Mail and non-web DNS records stay outside this contract and must remain preserved.
+  - First pass intentionally uses IPv4-only web cutover; IPv6 web proof is separate.
